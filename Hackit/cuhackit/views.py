@@ -23,9 +23,14 @@ def dispenser_view(request):
     else:
         return HttpResponse()
 
-class dispenserDetailView(DetailView):
-    model = dispenser
-
 class map(TemplateView):
     model = dispenser
     template_name = 'map.html'
+
+def dispensed_view(request, dispenser_id):
+    if(request.method == "GET"):
+        inventory = dispenser.objects.filter(inventory = dispenser_id)
+        print("Please print this ", inventory)
+        return HttpResponse()
+
+        
