@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Dispensers</title>
+     <!-- Compiled and minified CSS -->
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+     <!-- Compiled and minified JavaScript -->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 50%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    
+  </head>
+  <body>
+    <div id="map"></div>
+    <div id="dispenser_list"></div>
+    <script>
+
+        var locations = []
+        fetch('/api/')
+        .then((resp) => resp.json())
+        .then(function(data){
+            for (var i = 0; i < data.length; i++) {
+                dispenser = data[i]; 
+                locations.push({
+                    lat: parseFloat(dispenser.fields.lat), 
+                    lng: parseFloat(dispenser.fields.lng),
+                    url: '/api/' + dispenser.pk,
+                    data: dispenser});
+            }
+        })
+        .then(() => {
+            function initMap(){
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 15,
+                    center: {lat: 34.676961, lng: -82.836331}
+                });
+    
+                // Create an array of alphabetical characters used to label the markers.
+                var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    
+                // Add some markers to the map.
+                // Note: The code uses the JavaScript Array.prototype.map() method to
+                // create an array of markers based on a given "locations" array.
+                // The map() method here has nothing to do with the Google Maps API.
+                var markers = locations.map(function(location, i) {
+                    marker = new google.maps.Marker({
+                        position: location,
+                        label: (i + 1).toString()
+                    });
+                    marker.addListener('click', function() {
+                        window.open(location.url);
+                    });
+                    return marker;
+                });
+    
+                // Add a marker clusterer to manage the markers.
+                var markerCluster = new MarkerClusterer(map, markers,
+                    {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});   
+                    
+            }
+            this.initMap = initMap;
+        });
+        
+    </script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDxEUuE6E8t1bDDtLwRCnFST5juA96nCbU&callback=initMap">
+    </script>
+  </body>
+</html>
