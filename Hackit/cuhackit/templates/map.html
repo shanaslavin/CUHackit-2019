@@ -47,32 +47,17 @@
                     url: '/api/' + dispenser.pk,
                     data: dispenser});
             }
-        })
-        .then(() => {
-            function initMap(){
-                var map = new google.maps.Map(document.getElementById('map'), {
-                    zoom: 15,
-                    center: {lat: 34.676961, lng: -82.836331}
+            var markers = []; 
+            for (var i = 0; i < dispensers.length; i++) {
+                var dispenser = dispensers[i];
+                var latLng = new google.maps.LatLng(dispenser.lat, dispenser.lng);
+                var marker = new google.maps.Marker({
+                    position: latLng,
+                    map: map
                 });
-    
-                // Create an array of alphabetical characters used to label the markers.
-                var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    
-                // Add some markers to the map.
-                // Note: The code uses the JavaScript Array.prototype.map() method to
-                // create an array of markers based on a given "locations" array.
-                // The map() method here has nothing to do with the Google Maps API.
-                var markers = locations.map(function(location, i) {
-                    marker = new google.maps.Marker({
-                        position: location,
-                        label: (i + 1).toString()
-                    });
-                    marker.addListener('click', function() {
-                        window.open(location.url);
-                    });
-                    return marker;
-                // Add a marker clusterer to manage the markers.
-                var markerCluster = new MarkerClusterer(map, markers,
+                markers.push(marker);
+            }
+            var markerCluster = new MarkerClusterer(map, markers,
                     {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});   
         })
         .then(() => {
