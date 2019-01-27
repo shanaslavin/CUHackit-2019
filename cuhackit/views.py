@@ -62,7 +62,7 @@ class maintenance_view(TemplateView):
     template_name = 'maintenance.html'
     
 def filled_view(request, dispenser_id):
-    if(request.method == "POST"):
+    if(request.method == "GET"):
         dispenser_r = dispenser.objects.get(pk = dispenser_id)
         dispenser_r.inventory = dispenser_r.max_inventory
         dispenser_r.save()
