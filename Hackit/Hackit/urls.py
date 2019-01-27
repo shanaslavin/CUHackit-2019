@@ -23,5 +23,7 @@ urlpatterns = [
     path('api/', views.dispenser_view, name = 'api'),
     path('api/<int:dispenser_id>/', views.dispenser_view_single, name = 'api_single'),
     path('dispensed/<int:dispenser_id>/', views.dispensed_view),
+    path('maintenance/', views.maintenance_view.as_view(), name = 'maintain'),
+    path('maintenance/filled/<int:dispenser_id>/', views.filled_view)
 
 ]
