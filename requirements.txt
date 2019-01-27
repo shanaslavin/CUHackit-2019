@@ -2,3 +2,4 @@ Django==2.1.4
 stripe
 channels
 channels_redis
+gunicorn
