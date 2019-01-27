@@ -1,7 +1,7 @@
-Django==2.1.4
+django
 stripe
 channels
 dj_database_url
 psycopg2
 channels_redis
-gunicorn
+gunicorn 
