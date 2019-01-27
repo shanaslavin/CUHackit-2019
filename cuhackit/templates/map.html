@@ -99,6 +99,8 @@
           <div class="progress">
             <div class="determinate" style="width: 0%"></div>
           </div>
+          <div class="card-action">
+          </div>
         </div>
       </div>
   </div>
@@ -117,6 +119,11 @@
                 content.innerHTML =  "Dispenser " + dispenser.data.pk + " - Inventory : " + fields.inventory + " / " + fields.max_inventory;
                 var percent = (fields.inventory * 100) / fields.max_inventory;
                 card.getElementsByClassName("determinate")[0].style.width = percent + "%";  
+
+                var buyAction = document.createElement("a");
+                buyAction.href = "/order_pad/" + dispenser.data.pk + "/";
+                buyAction.innerHTML = "Buy Pad";
+                card.getElementsByClassName("card-action")[0].appendChild(buyAction);
 
                 document.getElementById("dispenser_list").appendChild(card);
                 
