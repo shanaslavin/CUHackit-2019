@@ -3,6 +3,8 @@ import json
 from asgiref.sync import async_to_sync
 
 class DispenserConsumer(WebsocketConsumer):
+    groups = ["dispensers"]
+
     def connect(self):
         self.dispenser_id = self.scope['url_route']['kwargs']['id']
         self.channel_name = "dispensers"
