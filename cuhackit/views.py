@@ -36,6 +36,9 @@ class map(TemplateView):
     model = dispenser
     template_name = 'map.html'
 
+def home_redirect(request):
+    return redirect(reverse_lazy('map'))
+
 def dispensed_view(request, dispenser_id):
     if(request.method == "GET"):
         dispenser_r = dispenser.objects.get(pk = dispenser_id)
