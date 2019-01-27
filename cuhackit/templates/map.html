@@ -10,12 +10,38 @@
      <!-- Compiled and minified JavaScript -->
      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <style>
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
       #map {
-        height: 50%;
+        height: 100vh;
       }
-      /* Optional: Makes the sample page fill the window. */
+      .flex_container{
+        display: grid;
+        grid-template: "list map" 100vh
+       / 50% 50%;
+      }
+      @media only screen and (max-width: 600px) {
+        #map {
+          height: 50vh;
+          width: 100vw;
+        }
+        .flex_container{
+          display: grid;
+          grid-template: "map" 
+          "list";
+        }
+      }
+      @media only screen and (min-width: 601px) {
+
+      }
+      .row {
+        height: 100%;
+      }
+      #map {
+        grid-area: map;
+      }
+      #dispenser_list{
+        grid-area: list;
+        overflow-y: scroll;
+      }
       html, body {
         height: 100%;
         margin: 0;
@@ -25,8 +51,10 @@
     
   </head>
   <body>
-    <div id="map"></div>
-    <div id="dispenser_list"></div>
+    <div class="flex_container">
+        <div id="map" class=""></div>
+        <div id="dispenser_list" class=""></div>
+    </div>
     <script>
         var map;
         function initMap(){
@@ -62,8 +90,8 @@
         })
         .then(() => {
             var card_html = `
-<div id="container" style = "width:100%">
-  <div id="left" style="float:left; width:25%;">
+<div id="container">
+  <div id="left">
       <div class="card blue-grey darken-1">
         <div class="card-content white-text">
           <span class="card-title">Card Title</span>
@@ -80,13 +108,13 @@
                 var dispenser = dispensers[i];
                 var card = document.createElement("div");
                 card.innerHTML = card_html;
+                var fields = dispenser.data.fields;
 
                 var title = card.getElementsByClassName("card-title")[0];
                 var content = card.getElementsByClassName("card_text")[0];
-                title.innerHTML = "Dispenser " + dispenser.data.pk;
+                title.innerHTML = fields.bathroom_name;
                 console.log(dispenser.data);
-                var fields = dispenser.data.fields;
-                content.innerHTML = fields.bathroom_name + " - Inventory : " + fields.inventory + " / " + fields.max_inventory;
+                content.innerHTML =  "Dispenser " + dispenser.data.pk + " - Inventory : " + fields.inventory + " / " + fields.max_inventory;
                 var percent = (fields.inventory * 100) / fields.max_inventory;
                 card.getElementsByClassName("determinate")[0].style.width = percent + "%";  
 
