@@ -56,7 +56,7 @@ def order_pad(request, dispenser_id):
         )
         channel_layer = channels.layers.get_channel_layer()
         async_to_sync(channel_layer.group_send)('dispensers', {"type": "send.json","text": dispenser_id})
-        return HttpResponse("Thank you for your purchase")
+        return redirect(reverse_lazy('map'))
         
 class maintenance_view(TemplateView):
     model = dispenser
