@@ -1,0 +1,4 @@
+django
+stripe
+channels
+channels_redis

@@ -23,5 +23,6 @@ urlpatterns = [
     path('api/', views.dispenser_view, name = 'api'),
     path('api/<int:dispenser_id>/', views.dispenser_view_single, name = 'api_single'),
     path('dispensed/<int:dispenser_id>/', views.dispensed_view),
+    path('order_pad/<int:dispenser_id>/', views.order_pad)
 
 ]
