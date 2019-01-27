@@ -1,4 +1,65 @@
-<h2>Buy a pad for .50</h2>
+<head>
+    <style>
+           /* Set the size of the div element that contains the map */
+          #map {
+            height: 50vh;  /* The height is 400 pixels */
+            width: 100%;  /* The width is the width of the web page */
+           }
+           p, span {
+               font-size: 2em !important;
+           }
+           a {
+               font-size: .7em;
+           }
+           span{
+               height: 2em !important;
+               line-height: 1.3em !important; 
+           }
+           .stripe-button-el{
+               height: 3em;
+           }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</head>
+<body>
+<div id="map"></div>
+<script>
+    var map;
+// Initialize and add the map
+function initMap() {
+  var home = {lat: 34.6761105, lng:-82.8366374};
+  map = new google.maps.Map(
+      document.getElementById('map'), {zoom: 16, center: home});
+}
+fetch('/api/{{dispenser_id}}/')
+        .then((resp) => resp.json())
+        .then(function(data){
+            dispenser = data[0]; 
+            var dispenser_parsed = {
+                lat: parseFloat(dispenser.fields.lat), 
+                lng: parseFloat(dispenser.fields.lng),
+                url: '/api/' + dispenser.pk,
+                data: dispenser};
+            var latLng = new google.maps.LatLng(dispenser_parsed.lat, dispenser_parsed.lng);
+            var marker = new google.maps.Marker({
+                position: latLng,
+                map: map
+            });
+            markers.push(marker);
+        });
+            
+    </script>
+    <!--Load the API from the specified URL
+    * The async attribute allows the browser to render the page while the API loads
+    * The key parameter will contain your own API key (which is not needed for this tutorial)
+    * The callback parameter executes the initMap() function
+    -->
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDxEUuE6E8t1bDDtLwRCnFST5juA96nCbU&callback=initMap">
+</script>
+<h2>Buy a pad for 50¢ at {{object.bathroom_name}}</h2>
+<p>Dispenser  {{object.pk}} - Inventory : {{object.inventory}} / {{object.max_inventory}} - <a href="/map/" class="button">Back to Map</a></p>
 <form action="/order_pad/{{dispenser_id}}/" method="post">
     {% csrf_token %}
     <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
@@ -8,3 +69,4 @@
         data-locale="auto">
     </script>
 </form>
+</body>

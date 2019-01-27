@@ -49,7 +49,7 @@ def dispensed_view(request, dispenser_id):
 
 def order_pad(request, dispenser_id):
     if(request.method == "GET"):
-        return render(request, 'order.html', {"dispenser_id": dispenser_id, "key": settings.STRIPE_PUBLISHABLE_KEY})
+        return render(request, 'order.html', {"dispenser_id": dispenser_id,"object": dispenser.objects.get(pk = dispenser_id), "key": settings.STRIPE_PUBLISHABLE_KEY})
     elif(request.method == "POST"):
         charge = stripe.Charge.create(
             amount=50,
