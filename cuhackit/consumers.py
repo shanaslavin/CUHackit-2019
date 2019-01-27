@@ -7,15 +7,15 @@ class DispenserConsumer(WebsocketConsumer):
         self.dispenser_id = self.scope['url_route']['kwargs']['id']
         self.channel_name = "dispensers"
         async_to_sync(self.channel_layer.group_add)(
-            f'dispenser{self.dispenser_id}',
-            self.channel_name
+            self.channel_name,
+            f'dispenser{self.dispenser_id}'
         )
         self.accept()
 
     def disconnect(self, close_code):
         async_to_sync(self.channel_layer.group_discard)(
-            f'dispenser{self.dispenser_id}',
-            self.channel_name
+            self.channel_name,
+            f'dispenser{self.dispenser_id}'
         )
 
     def dispense(self, dispenser_id):

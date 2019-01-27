@@ -54,7 +54,7 @@ def order_pad(request, dispenser_id):
         )
         channel_layer = channels.layers.get_channel_layer()
         from asgiref.sync import async_to_sync
-        async_to_sync(channel_layer.send)('dispensers', {'dispensed': dispenser_id})
+        async_to_sync(channel_layer.send)('dispensers', {"type": "send.json","text": json.dumps(updated_state)})
         return HttpResponse("Thank you for your purchase")
         
 class maintenance_view(TemplateView):
