@@ -9,6 +9,8 @@ from cuhackit.consumers import DispenserConsumer
 import channels.layers
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
+import json
+from asgiref.sync import async_to_sync
 
 # Create your views here.
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -53,7 +55,6 @@ def order_pad(request, dispenser_id):
             source=request.POST['stripeToken']
         )
         channel_layer = channels.layers.get_channel_layer()
-        from asgiref.sync import async_to_sync
         dispenser_data = {"dispensed": dispenser_id}
         async_to_sync(channel_layer.send)('dispensers', {"type": "send.json","text": json.dumps(dispenser_data)})
         return HttpResponse("Thank you for your purchase")
