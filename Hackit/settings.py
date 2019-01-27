@@ -30,7 +30,7 @@ STRIPE_PUBLISHABLE_KEY = 'pk_test_JgzbuxNu0UEVlWj3tzeiAUKC'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['mighty-wildwood-93572.herokuapp.com']
 
 
 # Application definition
