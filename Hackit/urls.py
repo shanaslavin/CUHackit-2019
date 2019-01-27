@@ -20,7 +20,7 @@ from cuhackit import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('map/', views.map.as_view(), name = 'map'),
-    path('/', views.home_redirect, name = 'home'),
+    path('', views.home_redirect, name = 'home'),
     path('api/', views.dispenser_view, name = 'api'),
     path('api/<int:dispenser_id>/', views.dispenser_view_single, name = 'api_single'),
     path('dispensed/<int:dispenser_id>/', views.dispensed_view),
