@@ -3,5 +3,6 @@ stripe
 channels
 dj_database_url
 psycopg2
+django-cors-headers
 channels_redis
 gunicorn 
