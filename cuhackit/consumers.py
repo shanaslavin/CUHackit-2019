@@ -11,6 +11,9 @@ class DispenserConsumer(WebsocketConsumer):
             f'dispenser{self.dispenser_id}'
         )
         self.accept()
+        self.send(text_data=json.dumps({
+            'dispenser': "Connected"
+        }))
 
     def disconnect(self, close_code):
         async_to_sync(self.channel_layer.group_discard)(
