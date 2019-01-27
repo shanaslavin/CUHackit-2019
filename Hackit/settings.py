@@ -80,16 +80,16 @@ WSGI_APPLICATION = 'Hackit.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-# DATABASES = {
-#      'default': dj_database_url.config(default=os.environ["DATABASE_URL"])
-# }
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+     'default': dj_database_url.config(default=os.environ["DATABASE_URL"])
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
 
 
 # Password validation
@@ -111,14 +111,14 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 ASGI_APPLICATION = 'Hackit.routing.application'
-# CHANNEL_LAYERS = {
-#     'default': {
-#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
-#         "CONFIG": {
-#             "hosts": [ os.environ["REDISCLOUD_URL"] ],
-#         },
-#     },
-# }
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        "CONFIG": {
+            "hosts": [ os.environ["REDISCLOUD_URL"] ],
+        },
+    },
+}
 
 
 # Internationalization
