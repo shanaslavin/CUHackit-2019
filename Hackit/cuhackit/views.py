@@ -7,6 +7,8 @@ from django.conf import settings
 import stripe
 from cuhackit.consumers import DispenserConsumer
 import channels.layers
+from django.urls import reverse_lazy
+from django.shortcuts import redirect
 
 # Create your views here.
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -34,9 +36,11 @@ class map(TemplateView):
 
 def dispensed_view(request, dispenser_id):
     if(request.method == "GET"):
-        inventory = dispenser.objects.filter(inventory = dispenser_id)
-        print("Please print this ", inventory)
-        return HttpResponse()
+        dispenser_r = dispenser.objects.get(pk = dispenser_id)
+        dispenser_r.inventory -= 1
+        dispenser_r.save()
+
+    return HttpResponse("Success!")
 
 def order_pad(request, dispenser_id):
     if(request.method == "GET"):
@@ -53,3 +57,14 @@ def order_pad(request, dispenser_id):
         async_to_sync(channel_layer.send)('dispensers', {'dispensed': dispenser_id})
         return HttpResponse("Thank You for your purchase")
         
+class maintenance_view(TemplateView):
+    model = dispenser
+    template_name = 'maintenance.html'
+    
+def filled_view(request, dispenser_id):
+    if(request.method == "GET"):
+        dispenser_r = dispenser.objects.get(pk = dispenser_id)
+        dispenser_r.inventory = dispenser_r.max_inventory
+        dispenser_r.save()
+        
+    return redirect(reverse_lazy('maintain'))

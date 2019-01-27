@@ -6,35 +6,19 @@
     <title>Dispensers</title>
      <!-- Compiled and minified CSS -->
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-
      <!-- Compiled and minified JavaScript -->
      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <style>
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-      #map {
-        height: 50%;
-      }
-      /* Optional: Makes the sample page fill the window. */
       html, body {
         height: 100%;
         margin: 0;
         padding: 0;
       }
     </style>
-    
   </head>
   <body>
-    <div id="map"></div>
     <div id="dispenser_list"></div>
     <script>
-        var map;
-        function initMap(){
-                map = new google.maps.Map(document.getElementById('map'), {
-                    zoom: 15,
-                    center: {lat: 34.676961, lng: -82.836331}
-                });              
-            }
         var dispensers = [];
         fetch('/api/')
         .then((resp) => resp.json())
@@ -42,23 +26,8 @@
             for (var i = 0; i < data.length; i++) {
                 dispenser = data[i]; 
                 dispensers.push({
-                    lat: parseFloat(dispenser.fields.lat), 
-                    lng: parseFloat(dispenser.fields.lng),
-                    url: '/api/' + dispenser.pk,
                     data: dispenser});
             }
-            var markers = []; 
-            for (var i = 0; i < dispensers.length; i++) {
-                var dispenser = dispensers[i];
-                var latLng = new google.maps.LatLng(dispenser.lat, dispenser.lng);
-                var marker = new google.maps.Marker({
-                    position: latLng,
-                    map: map
-                });
-                markers.push(marker);
-            }
-            var markerCluster = new MarkerClusterer(map, markers,
-                    {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});   
         })
         .then(() => {
             var card_html = `
@@ -70,6 +39,8 @@
           <p class="card_text"></p>
           <div class="progress">
             <div class="determinate" style="width: 0%"></div>
+          </div>
+          <div class="card-action">
           </div>
         </div>
       </div>
@@ -89,17 +60,17 @@
                 content.innerHTML = fields.bathroom_name + " - Inventory : " + fields.inventory + " / " + fields.max_inventory;
                 var percent = (fields.inventory * 100) / fields.max_inventory;
                 card.getElementsByClassName("determinate")[0].style.width = percent + "%";  
-
+                
+                var fillAction = document.createElement("a");
+                fillAction.href = "/maintenance/filled/" + dispenser.data.pk + "/";
+                fillAction.innerHTML = "Mark As Refilled";
+                card.getElementsByClassName("card-action")[0].appendChild(fillAction);
+                
                 document.getElementById("dispenser_list").appendChild(card);
                 
             }
         });;
         
-    </script>
-    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
-    </script>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDxEUuE6E8t1bDDtLwRCnFST5juA96nCbU&callback=initMap">
     </script>
   </body>
 </html>
