@@ -1,0 +1,6 @@
+*/__pycache__/*
+Hackit/__pycache__
+cuhackit/__pycache__
+*.pyc
+.direnv/
+.envrc
