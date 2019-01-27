@@ -1,5 +1,6 @@
 Django==2.1.4
 stripe
 channels
+dj_database_url
 channels_redis
 gunicorn
