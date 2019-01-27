@@ -23,7 +23,7 @@ class DispenserConsumer(WebsocketConsumer):
             f'dispenser{self.dispenser_id}'
         )
 
-    def dispense(self, dispenser_id):
+    def send_json(self, dispenser_id):
         # Send message to WebSocket
         self.send(text_data=json.dumps({
             'dispenser': dispenser_id
