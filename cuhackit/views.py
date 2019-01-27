@@ -57,6 +57,9 @@ def order_pad(request, dispenser_id):
             description='Someone purchased a pad',
             source=request.POST['stripeToken']
         )
+        # TODO Only doing this because the call back to subtract isn't working do to cors
+        dispenser_r = dispenser.objects.get(pk = dispenser_id)
+        dispenser_r.inventory -= 1
         channel_layer = channels.layers.get_channel_layer()
         async_to_sync(channel_layer.group_send)('dispensers', {"type": "send.json","text": dispenser_id})
         return redirect(reverse_lazy('map'))
